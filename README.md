@@ -2,7 +2,7 @@
 
 **AI-Powered Onboarding for the Modern Workforce**
 
-RoleReady transforms company knowledge from GitHub repositories, Jira issues, Confluence pages, and internal documents into intelligent, interactive training content for new hires and employees. Built by team of 10 developers in USC CSCI 577A - Software Engineering (Spring 2026).
+RoleReady transforms company knowledge from GitHub repositories, Jira issues, Confluence pages, and internal documents into intelligent, interactive training content for new hires and employees. Built by team of 10 developers in USC CSCI 577A - Software Engineering (Spring 2026)
 
 ---
 
