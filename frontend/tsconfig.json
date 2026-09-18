@@ -1,0 +1,108 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "paths": {
+      "@app/ui/button": [
+        "./libs/ui/button/src/index.ts"
+      ],
+      "@app/ui/utils": [
+        "./libs/ui/utils/src/index.ts"
+      ],
+      "@app/ui/card": [
+        "./libs/ui/card/src/index.ts"
+      ],
+      "@app/ui/sidebar": [
+        "./libs/ui/sidebar/src/index.ts"
+      ],
+      "@app/ui/icon": [
+        "./libs/ui/icon/src/index.ts"
+      ],
+      "@app/ui/input": [
+        "./libs/ui/input/src/index.ts"
+      ],
+      "@app/ui/separator": [
+        "./libs/ui/separator/src/index.ts"
+      ],
+      "@app/ui/sheet": [
+        "./libs/ui/sheet/src/index.ts"
+      ],
+      "@app/ui/skeleton": [
+        "./libs/ui/skeleton/src/index.ts"
+      ],
+      "@app/ui/tooltip": [
+        "./libs/ui/tooltip/src/index.ts"
+      ],
+      "@app/ui/dropdown-menu": [
+        "./libs/ui/dropdown-menu/src/index.ts"
+      ],
+      "@app/ui/avatar": [
+        "./libs/ui/avatar/src/index.ts"
+      ],
+      "@app/ui/badge": [
+        "./libs/ui/badge/src/index.ts"
+      ],
+      "@app/ui/alert": [
+        "./libs/ui/alert/src/index.ts"
+      ],
+      "@app/ui/table": [
+        "./libs/ui/table/src/index.ts"
+      ],
+      "@app/ui/select": [
+        "./libs/ui/select/src/index.ts"
+      ],
+      "@app/ui/spinner": [
+        "./libs/ui/spinner/src/index.ts"
+      ],
+      "@app/ui/alert-dialog": [
+        "./libs/ui/alert-dialog/src/index.ts"
+      ],
+      "@app/ui/label": [
+        "./libs/ui/label/src/index.ts"
+      ],
+      "@app/ui/form-field": [
+        "./libs/ui/form-field/src/index.ts"
+      ],
+      "@app/ui/item": [
+        "./libs/ui/item/src/index.ts"
+      ],
+      "@app/ui/dialog": [
+        "./libs/ui/dialog/src/index.ts"
+      ],
+      "@app/ui/tabs": [
+        "./libs/ui/tabs/src/index.ts"
+      ],
+      "@app/ui/progress": [
+        "./libs/ui/progress/src/index.ts"
+      ],
+      "@app/ui/empty": [
+        "./libs/ui/empty/src/index.ts"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

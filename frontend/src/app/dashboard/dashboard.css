@@ -1,0 +1,191 @@
+:host {
+  display: block;
+}
+
+.dashboard-page {
+  background: var(--dashboard-page-gradient);
+}
+
+.dashboard-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--dashboard-hero-surface) 0%,
+    var(--dashboard-hero-surface-end) 100%
+  );
+}
+
+.dashboard-hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top right, var(--dashboard-hero-glow) 0%, transparent 48%),
+    linear-gradient(180deg, transparent 55%, var(--dashboard-card-overlay) 100%);
+}
+
+.dashboard-kicker {
+  margin: 0;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.dashboard-stat-card,
+.dashboard-training-card {
+  border: 1px solid var(--dashboard-border-strong);
+  background: var(--card);
+}
+
+.dashboard-stat-card {
+  backdrop-filter: blur(16px);
+}
+
+.dashboard-card-panel {
+  background: var(--dashboard-card-panel);
+}
+
+.dashboard-stat-value {
+  background: var(--dashboard-tone-soft);
+  color: var(--dashboard-tone-foreground);
+}
+
+.dashboard-image-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 42%, rgba(15, 23, 42, 0.48) 100%);
+}
+
+.dashboard-training-card {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.dashboard-training-card:hover {
+  transform: translateY(-2px);
+}
+
+.dashboard-training-image {
+  transition: transform 220ms ease;
+}
+
+.dashboard-training-card:hover .dashboard-training-image {
+  transform: scale(1.03);
+}
+
+.dashboard-tone-chip,
+.dashboard-tone-label {
+  color: var(--dashboard-tone-foreground);
+}
+
+.dashboard-tone-chip {
+  background: var(--dashboard-tone-soft);
+}
+
+.dashboard-tone-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-kpi-progress,
+.dashboard-segment-bar {
+  overflow: hidden;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--muted) 78%, transparent);
+}
+
+.dashboard-kpi-progress {
+  height: 0.35rem;
+}
+
+.dashboard-kpi-progress > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--dashboard-tone-start), var(--dashboard-tone-end));
+}
+
+.dashboard-segment-bar {
+  display: flex;
+  height: 0.4rem;
+}
+
+[data-segment='completed'] {
+  background: var(--dashboard-accent-ocean-end);
+}
+
+[data-segment='in-progress'] {
+  background: var(--dashboard-accent-sky-end);
+}
+
+[data-segment='not-started'] {
+  background: var(--dashboard-accent-indigo-end);
+}
+
+.dashboard-play-button {
+  transition: background-color 180ms ease;
+}
+
+.dashboard-play-button:hover {
+  background: rgba(15, 23, 42, 0.1);
+}
+
+.dashboard-play-core {
+  display: inline-flex;
+  height: 3.5rem;
+  width: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  background: var(--dashboard-play-surface);
+  color: white;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 30px -20px rgba(15, 23, 42, 0.8);
+}
+
+.dashboard-tabs [data-slot='tabs-list'] {
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-tabs [data-slot='tabs-trigger'][data-active] {
+  color: var(--foreground);
+}
+
+.dashboard-tabs [data-slot='tabs-trigger'][data-active]::after {
+  background: var(--primary);
+}
+
+[data-tone='ocean'] {
+  --dashboard-tone-start: var(--dashboard-accent-ocean-start);
+  --dashboard-tone-end: var(--dashboard-accent-ocean-end);
+  --dashboard-tone-soft: var(--dashboard-accent-ocean-soft);
+  --dashboard-tone-foreground: var(--dashboard-accent-ocean-foreground);
+}
+
+[data-tone='sky'] {
+  --dashboard-tone-start: var(--dashboard-accent-sky-start);
+  --dashboard-tone-end: var(--dashboard-accent-sky-end);
+  --dashboard-tone-soft: var(--dashboard-accent-sky-soft);
+  --dashboard-tone-foreground: var(--dashboard-accent-sky-foreground);
+}
+
+[data-tone='indigo'] {
+  --dashboard-tone-start: var(--dashboard-accent-indigo-start);
+  --dashboard-tone-end: var(--dashboard-accent-indigo-end);
+  --dashboard-tone-soft: var(--dashboard-accent-indigo-soft);
+  --dashboard-tone-foreground: var(--dashboard-accent-indigo-foreground);
+}
+
+@media (max-width: 639px) {
+  .dashboard-play-core {
+    height: 3rem;
+    width: 3rem;
+  }
+}

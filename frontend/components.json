@@ -1,0 +1,4 @@
+{
+  "directory": "libs/ui",
+  "importAlias": "@app/ui"
+}

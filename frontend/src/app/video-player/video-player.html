@@ -1,0 +1,430 @@
+<div class="mx-auto max-w-7xl space-y-8">
+  <header class="space-y-4">
+    <a hlmBtn variant="ghost" size="sm" [routerLink]="dashboardLink()" class="-ml-2">
+      <ng-icon name="lucideArrowLeft" />
+      Back to dashboard
+    </a>
+    <div class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-tight text-foreground">Training Library</h1>
+      <p class="max-w-3xl text-sm leading-6 text-muted-foreground">
+        Project-backed training status is now live on this page. Dedicated video playback, lesson
+        ordering, and learner progress tracking will be wired when training APIs land.
+      </p>
+    </div>
+  </header>
+
+  @if (errorMessage(); as errorMessage) {
+    <div hlmAlert variant="destructive">
+      <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+      <p hlmAlertDescription>{{ errorMessage }}</p>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <section class="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
+      <section hlmCard class="overflow-hidden border-border/70 shadow-sm">
+        <div hlmCardContent class="space-y-6 p-6">
+          <hlm-skeleton class="aspect-video w-full rounded-3xl" />
+          <div class="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(240px,0.9fr)]">
+            <div class="space-y-4">
+              <hlm-skeleton class="h-8 w-64" />
+              <hlm-skeleton class="h-5 w-full" />
+              <hlm-skeleton class="h-5 w-5/6" />
+              <div class="flex gap-3 pt-2">
+                <hlm-skeleton class="h-10 w-36" />
+                <hlm-skeleton class="h-10 w-32" />
+              </div>
+            </div>
+            <div class="space-y-4 rounded-2xl border border-border/60 bg-muted/30 p-5">
+              @for (_ of metadataSkeletons; track $index) {
+                <div class="space-y-2">
+                  <hlm-skeleton class="h-4 w-24" />
+                  <hlm-skeleton class="h-5 w-40" />
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="space-y-6">
+        <section hlmCard class="border-border/70 shadow-sm">
+          <div hlmCardHeader>
+            <hlm-skeleton class="h-6 w-24" />
+            <hlm-skeleton class="h-4 w-40" />
+          </div>
+          <div hlmCardContent class="space-y-3">
+            @for (_ of sidebarSkeletons; track $index) {
+              <div class="space-y-3 rounded-2xl border border-border/60 p-4">
+                <hlm-skeleton class="h-20 w-full rounded-xl" />
+                <hlm-skeleton class="h-5 w-32" />
+                <hlm-skeleton class="h-4 w-full" />
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    </section>
+  } @else if (activeTraining(); as training) {
+    <section class="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
+      <section hlmCard class="overflow-hidden border-border/70 bg-card/95 shadow-sm">
+        <div hlmCardContent class="space-y-6 p-6">
+          <div
+            class="relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-slate-950"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-[var(--dashboard-accent-ocean-start)]/30 via-transparent to-[var(--dashboard-accent-sky-end)]/20"
+            ></div>
+            <app-training-cover-image
+              [imageUrl]="training.imageUrl"
+              [imageAlt]="training.imageAlt"
+              [imageStatus]="training.coverImageStatus"
+              imageClass="aspect-video w-full object-cover opacity-80"
+              placeholderClass="aspect-video w-full"
+            />
+
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent"
+            ></div>
+
+            <div class="absolute inset-x-0 top-0 flex items-start justify-between p-5">
+              <span
+                class="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur"
+              >
+                {{ training.badgeLabel }}
+              </span>
+              <button
+                hlmBtn
+                type="button"
+                variant="ghost-inverse"
+                size="icon-sm"
+                aria-label="Open training preview"
+                (click)="openPreview(training)"
+              >
+                <ng-icon name="lucideMaximize" />
+              </button>
+            </div>
+
+            <div class="absolute inset-0 flex items-center justify-center px-6">
+              <button
+                hlmBtn
+                type="button"
+                variant="ghost-inverse"
+                size="icon-lg"
+                class="size-20 rounded-full"
+                aria-label="Preview training"
+                (click)="openPreview(training)"
+              >
+                <ng-icon name="lucidePlay" class="text-2xl" />
+              </button>
+            </div>
+
+            <div class="absolute inset-x-0 bottom-0 space-y-4 p-5 text-white">
+              <app-accent-progress-bar [value]="training.progress" [tone]="training.accent" />
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="space-y-1">
+                  <p class="text-sm font-medium text-white/95">{{ training.progressLabel }}</p>
+                  <p class="text-xs text-white/70">{{ training.progressHint }}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    hlmBtn
+                    type="button"
+                    variant="ghost-inverse"
+                    size="icon-sm"
+                    disabled
+                    aria-label="Skip back unavailable"
+                  >
+                    <ng-icon name="lucideSkipBack" />
+                  </button>
+                  <button
+                    hlmBtn
+                    type="button"
+                    variant="ghost-inverse"
+                    size="icon-sm"
+                    disabled
+                    aria-label="Captions unavailable"
+                  >
+                    <ng-icon name="lucideSubtitles" />
+                  </button>
+                  <button
+                    hlmBtn
+                    type="button"
+                    variant="ghost-inverse"
+                    size="icon-sm"
+                    disabled
+                    aria-label="Settings unavailable"
+                  >
+                    <ng-icon name="lucideSettings" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(240px,0.9fr)]">
+            <div class="space-y-5">
+              <div class="space-y-3">
+                <h2 class="text-2xl font-semibold tracking-tight text-foreground">
+                  {{ training.title }}
+                </h2>
+                <p class="text-sm leading-7 text-muted-foreground">
+                  {{ training.description }}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button hlmBtn type="button" size="lg" (click)="openPreview(training)">
+                  <ng-icon name="lucidePlay" />
+                  Preview training
+                </button>
+                <a
+                  hlmBtn
+                  variant="outline"
+                  size="lg"
+                  [routerLink]="projectLink(training.projectId)"
+                >
+                  <ng-icon name="lucideExternalLink" />
+                  Open project
+                </a>
+              </div>
+
+              <div hlmAlert class="border-border/70 bg-muted/40">
+                <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+                <p hlmAlertDescription>
+                  This page currently reflects live project pipeline data. Video playback and
+                  learner completion will switch to dedicated training APIs later.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-4 rounded-2xl border border-border/70 bg-muted/30 p-5">
+              <div class="space-y-1">
+                <p class="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Progress
+                </p>
+                <p class="text-sm font-medium text-foreground">{{ training.progressLabel }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Sources
+                </p>
+                <p class="text-sm font-medium text-foreground">{{ training.detailLabel }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Updated
+                </p>
+                <p class="text-sm font-medium text-foreground">{{ training.updatedAtLabel }}</p>
+              </div>
+
+              <!-- TODO(api): Replace this placeholder card with learner assignment/completion state once training enrollment APIs exist. -->
+              <div class="rounded-2xl border border-dashed border-border/80 bg-background/80 p-4">
+                <p class="text-sm font-medium text-foreground">Completion tracking</p>
+                <p class="mt-2 text-sm leading-6 text-muted-foreground">
+                  Learner-specific completion, resume position, and quiz state are not exposed by
+                  the backend yet.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="space-y-6">
+        <section hlmCard class="border-border/70 shadow-sm">
+          <div hlmCardHeader class="space-y-1">
+            <h3 hlmCardTitle>Up Next</h3>
+            <p hlmCardDescription>Other project-backed trainings in this organization.</p>
+          </div>
+          <div hlmCardContent class="space-y-3">
+            @if (upNextTrainings().length > 0) {
+              @for (queuedTraining of upNextTrainings(); track queuedTraining.id) {
+                <button
+                  type="button"
+                  class="w-full rounded-2xl border border-border/70 bg-card p-3 text-left transition-colors hover:bg-accent/20"
+                  [class.ring-2]="queuedTraining.id === activeTraining().id"
+                  [class.ring-primary]="queuedTraining.id === activeTraining().id"
+                  (click)="selectTraining(queuedTraining.id)"
+                >
+                  <div class="flex gap-4">
+                    <app-training-cover-image
+                      [imageUrl]="queuedTraining.imageUrl"
+                      [imageAlt]="queuedTraining.imageAlt"
+                      [imageStatus]="queuedTraining.coverImageStatus"
+                      imageClass="h-20 w-28 rounded-xl object-cover"
+                      placeholderClass="h-20 w-28 shrink-0 rounded-xl"
+                      [showLabel]="false"
+                    />
+                    <div class="min-w-0 flex-1 space-y-3">
+                      <div class="space-y-1">
+                        <p class="truncate text-sm font-medium text-foreground">
+                          {{ queuedTraining.title }}
+                        </p>
+                        <p class="text-xs leading-5 text-muted-foreground">
+                          {{ queuedTraining.progressHint }}
+                        </p>
+                      </div>
+                      <div class="space-y-2">
+                        <div
+                          class="flex items-center justify-between gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
+                        >
+                          <span>{{ queuedTraining.badgeLabel }}</span>
+                          <span>{{ queuedTraining.progress }}%</span>
+                        </div>
+                        <app-accent-progress-bar
+                          [value]="queuedTraining.progress"
+                          [tone]="queuedTraining.accent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              }
+            } @else {
+              <section
+                hlmEmpty
+                class="rounded-2xl border border-dashed border-border/80 bg-card/70"
+              >
+                <div hlmEmptyHeader>
+                  <div hlmEmptyMedia variant="icon">
+                    <ng-icon name="lucidePlay" />
+                  </div>
+                  <h3 hlmEmptyTitle>No other trainings in queue</h3>
+                  <p hlmEmptyDescription>
+                    New project-backed trainings will show up here as soon as they exist.
+                  </p>
+                </div>
+              </section>
+            }
+          </div>
+        </section>
+
+        <section hlmCard class="border-border/70 shadow-sm">
+          <div hlmCardHeader class="space-y-1">
+            <h3 hlmCardTitle>Connected Resources</h3>
+            <p hlmCardDescription>Live source links inherited from the backing project.</p>
+          </div>
+          <div hlmCardContent class="space-y-3">
+            @if (training.resources.length > 0) {
+              @for (resource of training.resources; track resource.id) {
+                <a
+                  hlmBtn
+                  variant="outline"
+                  class="h-auto w-full justify-between rounded-2xl px-4 py-3"
+                  [href]="resource.href"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span class="flex items-center gap-3 text-left">
+                    <ng-icon name="lucideFile" />
+                    <span class="space-y-1">
+                      <span class="block text-sm font-medium">{{ resource.label }}</span>
+                      <span class="block text-xs text-muted-foreground">{{ resource.href }}</span>
+                    </span>
+                  </span>
+                  <ng-icon name="lucideExternalLink" />
+                </a>
+              }
+            } @else {
+              <section
+                hlmEmpty
+                class="rounded-2xl border border-dashed border-border/80 bg-card/70"
+              >
+                <div hlmEmptyHeader>
+                  <div hlmEmptyMedia variant="icon">
+                    <ng-icon name="lucideFileText" />
+                  </div>
+                  <h3 hlmEmptyTitle>{{ resourcesEmptyState.title }}</h3>
+                  <p hlmEmptyDescription>{{ resourcesEmptyState.description }}</p>
+                </div>
+              </section>
+            }
+          </div>
+        </section>
+      </div>
+    </section>
+  } @else {
+    <section hlmEmpty class="rounded-3xl border border-dashed border-border/80 bg-card/70 py-10">
+      <div hlmEmptyHeader>
+        <div hlmEmptyMedia variant="icon">
+          <ng-icon name="lucidePlay" />
+        </div>
+        <h3 hlmEmptyTitle>{{ emptyState.title }}</h3>
+        <p hlmEmptyDescription>{{ emptyState.description }}</p>
+      </div>
+    </section>
+  }
+</div>
+
+<hlm-dialog
+  [state]="previewTraining() ? 'open' : 'closed'"
+  (stateChanged)="handlePreviewStateChange($event)"
+>
+  <ng-template hlmDialogPortal>
+    <div hlmDialogContent class="overflow-hidden p-0 sm:max-w-4xl">
+      @if (previewTraining(); as training) {
+        <div class="border-b border-border px-6 py-4">
+          <div class="flex items-start justify-between gap-4">
+            <div class="space-y-1">
+              <h3 hlmDialogTitle class="text-xl font-semibold">{{ training.title }}</h3>
+              <p hlmDialogDescription class="text-sm text-muted-foreground">
+                {{ training.badgeLabel }} · {{ training.progressLabel }}
+              </p>
+            </div>
+            <button
+              hlmBtn
+              hlmDialogClose
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Close preview"
+            >
+              <ng-icon name="lucideX" />
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-6 p-6">
+          <app-training-cover-image
+            [imageUrl]="training.imageUrl"
+            [imageAlt]="training.imageAlt"
+            [imageStatus]="training.coverImageStatus"
+            imageClass="aspect-video w-full rounded-2xl object-cover"
+            placeholderClass="aspect-video w-full rounded-2xl"
+          />
+          <div class="space-y-3">
+            <app-accent-progress-bar [value]="training.progress" [tone]="training.accent" />
+            <p class="text-sm leading-6 text-muted-foreground">{{ training.progressHint }}</p>
+          </div>
+
+          <!-- TODO(api): Replace this preview placeholder with signed media playback URLs, timed captions, and checkpoint mutations once training/video APIs exist. -->
+          <div
+            class="flex aspect-video items-center justify-center rounded-3xl border border-dashed border-border bg-muted/40"
+          >
+            <div class="space-y-3 text-center">
+              <button
+                hlmBtn
+                type="button"
+                variant="ghost"
+                size="icon-lg"
+                class="size-16 rounded-full border border-border/70 bg-background/80"
+                disabled
+                aria-label="Video preview unavailable"
+              >
+                <ng-icon name="lucidePlay" class="text-xl" />
+              </button>
+              <div class="space-y-1">
+                <p class="font-medium text-foreground">Video preview placeholder</p>
+                <p class="max-w-md text-sm leading-6 text-muted-foreground">
+                  The backend does not expose training media yet, so this modal reserves the future
+                  playback surface without faking a video URL.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </ng-template>
+</hlm-dialog>

@@ -1,0 +1,638 @@
+<main class="landing-shell landing-body min-h-svh overflow-x-clip text-white">
+  <div class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
+    <div class="landing-grid absolute inset-0 opacity-75"></div>
+    <div class="landing-mesh absolute inset-0 opacity-90"></div>
+  </div>
+
+  <nav
+    class="fixed inset-x-0 top-4 z-50 px-6 transition-all duration-500 lg:px-8"
+    [attr.data-scrolled]="scrolled()"
+  >
+    <div class="landing-nav-shell mx-auto max-w-7xl">
+      <a href="#home" class="flex items-center gap-3 text-white no-underline">
+        <app-service-icon class="h-10 w-10" />
+        <span class="landing-heading text-xl tracking-tight">RoleReady</span>
+      </a>
+
+      <div class="landing-nav-pill hidden items-center md:flex">
+        @for (link of navLinks; track link.href) {
+          <a [href]="link.href" class="landing-nav-link">
+            {{ link.label }}
+          </a>
+        }
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a routerLink="/login" class="landing-nav-ghost hidden sm:inline-flex">Sign in</a>
+        <a routerLink="/login" class="landing-button landing-button-primary landing-button-nav">
+          Get started free
+          <ng-icon name="lucideArrowUpRight" />
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="hero-section relative overflow-hidden">
+    <div class="section-ambient section-ambient-hero absolute inset-0 z-0" aria-hidden="true">
+      <div class="glow-blue absolute inset-0"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
+
+    <div
+      class="hero-copy relative z-10 mx-auto flex min-h-[1000px] max-w-7xl flex-col items-center px-6 pt-[150px] text-center lg:px-8"
+    >
+      <div class="section-badge hero-eyebrow animate-enter" style="--delay: 0.08s">
+        <span class="badge-callout">New</span>
+        <span>Built from GitHub, Jira, docs, and wikis</span>
+      </div>
+
+      <h1
+        class="hero-title landing-heading animate-enter mt-8 flex max-w-5xl flex-col items-center text-5xl leading-[0.85] tracking-[-0.04em] text-white md:text-8xl lg:text-[5rem]"
+        style="--delay: 0.18s"
+      >
+        <span class="hero-title-line">Turn live company knowledge into</span>
+        <span class="hero-title-line">
+          <span class="hero-title-accent">role-ready</span> training.
+        </span>
+      </h1>
+
+      <p
+        class="hero-subcopy animate-enter mt-8 max-w-2xl text-lg leading-relaxed text-white/50"
+        style="--delay: 0.38s"
+      >
+        Connect GitHub, Jira, Confluence, and docs. RoleReady turns them into summaries, mind maps,
+        infographics, narration, and manager-visible onboarding flows.
+      </p>
+
+      <div
+        class="hero-actions animate-enter mt-10 flex flex-col items-center gap-4 sm:flex-row"
+        style="--delay: 0.56s"
+      >
+        <a routerLink="/login" class="landing-button landing-button-primary">
+          Get started free
+          <ng-icon name="lucideArrowUpRight" />
+        </a>
+        <a href="#how-it-works" class="landing-button landing-button-secondary">
+          See the walkthrough
+          <ng-icon name="lucidePlay" />
+        </a>
+      </div>
+
+      <div class="hero-visual animate-enter mt-16 w-full max-w-4xl" style="--delay: 0.8s">
+        <div class="liquid-glass rounded-[1.6rem] p-1">
+          <div
+            class="scan-line overflow-hidden rounded-[1.2rem] border border-white/5 bg-[#0a1628]"
+          >
+            <div class="flex items-center gap-2 border-b border-white/5 px-4 py-3">
+              <div class="h-3 w-3 rounded-full bg-red-400/40"></div>
+              <div class="h-3 w-3 rounded-full bg-yellow-400/40"></div>
+              <div class="h-3 w-3 rounded-full bg-green-400/40"></div>
+              <div class="ml-4 h-5 w-48 rounded bg-white/5"></div>
+            </div>
+
+            <div class="grid gap-4 p-6 md:grid-cols-[220px_minmax(0,1fr)]">
+              <div class="space-y-3">
+                <div
+                  class="hero-source-card hero-source-card-active flex items-center gap-3 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-3"
+                >
+                  <div class="h-4 w-4 rounded bg-blue-500/30"></div>
+                  <div class="h-2.5 w-20 rounded bg-blue-400/30"></div>
+                </div>
+
+                @for (item of heroSidebarItems; track item) {
+                  <div
+                    class="hero-source-card hero-source-row flex items-center gap-3 rounded-xl bg-white/[0.02] px-3 py-3"
+                    [style.--hero-row-delay]="0.7 + $index * 0.16 + 's'"
+                  >
+                    <div class="h-4 w-4 rounded bg-white/5"></div>
+                    <div
+                      class="hero-source-line h-2 rounded bg-white/5"
+                      [style.width.%]="60 + $index * 10"
+                    ></div>
+                  </div>
+                }
+              </div>
+
+              <div class="space-y-4">
+                <div class="grid gap-3 sm:grid-cols-3">
+                  @for (metric of heroMetrics; track metric.label) {
+                    <div
+                      class="hero-metric-card rounded-xl border border-white/5 bg-white/[0.02] p-4 text-center"
+                      [style.--metric-delay]="1.3 + $index * 0.14 + 's'"
+                    >
+                      <div class="landing-heading text-2xl text-blue-400">{{ metric.value }}</div>
+                      <div class="mt-2 text-[0.68rem] uppercase tracking-[0.18em] text-white/35">
+                        {{ metric.label }}
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+                  @for (bar of heroProgressBars; track bar.label) {
+                    <div
+                      class="hero-progress-row"
+                      [style.--progress-delay]="1.75 + $index * 0.18 + 's'"
+                    >
+                      <div class="hero-progress-dot"></div>
+                      <div class="flex-1">
+                        <div class="mb-2 flex items-center justify-between gap-4 text-xs">
+                          <span class="text-white/45">{{ bar.label }}</span>
+                          <span class="text-white/30">{{ bar.progress }}%</span>
+                        </div>
+                        <div class="h-2 overflow-hidden rounded-full bg-white/5">
+                          <div
+                            class="hero-progress-fill h-full rounded-full bg-gradient-to-r from-blue-600 to-blue-400"
+                            [style.--fill-scale]="bar.progress / 100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="integrations"
+    class="integration-section relative flex flex-col items-center overflow-hidden px-6 py-16 lg:px-8"
+  >
+    <div class="section-intro integration-intro mx-auto max-w-3xl text-center">
+      <span class="section-badge">Connected sources</span>
+      <h2 class="landing-heading mt-4 text-3xl leading-[0.92] text-white md:text-4xl">
+        Bring every source into one onboarding layer.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/50">
+        Connect the systems where work already happens. RoleReady keeps the ramp current as code,
+        tickets, docs, and internal know-how evolve.
+      </p>
+    </div>
+
+    <div class="relative mt-9 w-full">
+      <div class="landing-marquee flex w-max gap-6">
+        @for (item of integrationMarqueeItems; track item.id) {
+          <div
+            class="integration-card liquid-glass"
+            [attr.aria-hidden]="item.hidden ? 'true' : null"
+          >
+            <div class="integration-icon">
+              @switch (item.logo) {
+                @case ('github') {
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+                    />
+                  </svg>
+                }
+                @case ('jira') {
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M11.571 11.513H0a5.218 5.218 0 005.232 5.215h2.13v2.057A5.215 5.215 0 0012.575 24V12.518a1.005 1.005 0 00-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 005.215 5.214h2.129v2.058a5.218 5.218 0 005.215 5.214V6.758a1.001 1.001 0 00-1.001-1.001zM23 .262H11.443a5.215 5.215 0 005.214 5.215h2.129v2.057A5.215 5.215 0 0024 12.749V1.267A1.005 1.005 0 0023 .262z"
+                    />
+                  </svg>
+                }
+                @case ('confluence') {
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M.87 18.257c-.248.382-.53.875-.763 1.245a.764.764 0 00.255 1.04l4.965 3.054a.764.764 0 001.058-.26c.199-.332.496-.86.782-1.358 1.723-3.002 3.452-2.457 6.625-.886l4.2 2.09a.765.765 0 001.01-.383l2.166-5.053a.764.764 0 00-.382-1.003l-4.153-2.066c-5.56-2.768-10.2-1.148-15.763 3.58zM23.131 5.743c.249-.405.531-.875.764-1.27a.764.764 0 00-.256-1.04L18.674.38a.764.764 0 00-1.058.26c-.199.332-.496.86-.782 1.357-1.723 3.003-3.452 2.458-6.625.886L6.01.793a.764.764 0 00-1.01.382L2.833 6.228a.764.764 0 00.382 1.003l4.153 2.066c5.56 2.768 10.2 1.148 15.763-3.554z"
+                    />
+                  </svg>
+                }
+                @case ('google-drive') {
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M7.71 3.5L1.15 15l2.78 4.83L10.49 8.33zM16.29 3.5H7.71l6.56 11.33h8.58zM8.33 15.83L5.55 20.67h12.9l2.78-4.84z"
+                    />
+                  </svg>
+                }
+                @case ('notion') {
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.3 2.15c-.42-.326-.98-.7-2.054-.607L3.39 2.61c-.467.046-.56.28-.373.466zm.793 3.172v13.863c0 .746.373 1.026 1.214.98l14.523-.84c.84-.046.933-.56.933-1.166V6.354c0-.606-.233-.933-.746-.886l-15.177.886c-.56.047-.747.327-.747.886zm14.337.7c.093.42 0 .84-.42.886l-.7.14v10.264c-.607.327-1.167.514-1.634.514-.746 0-.933-.234-1.493-.933l-4.574-7.186v6.952l1.447.327s0 .84-1.167.84l-3.218.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.46 9.76c-.094-.42.14-1.026.793-1.073l3.452-.233 4.76 7.278v-6.44l-1.214-.14c-.094-.514.28-.886.747-.933zM2.667 1.237l13.635-1.006c1.68-.14 2.1.093 2.8.606l3.873 2.706c.466.327.606.7.606 1.167v16.59c0 1.027-.373 1.633-1.68 1.726L6.486 23.94c-.98.047-1.447-.093-1.96-.747l-3.127-4.06c-.56-.746-.793-1.306-.793-1.96V2.87c0-.84.373-1.54 1.354-1.633z"
+                    />
+                  </svg>
+                }
+              }
+            </div>
+            <span class="integration-label">{{ item.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="relative overflow-hidden px-6 py-28 md:px-16 lg:px-24">
+    <div class="section-ambient section-ambient-how absolute inset-0 z-0" aria-hidden="true">
+      <div class="gradient-mesh absolute inset-0"></div>
+      <div class="bg-dots absolute inset-0"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <div
+      class="section-intro relative z-10 mx-auto flex max-w-6xl flex-col items-center text-center"
+    >
+      <span class="section-badge">How it works</span>
+      <h2 class="section-title landing-heading mt-4 text-4xl leading-[0.9] text-white md:text-5xl">
+        Connect. Generate. Ramp.
+      </h2>
+      <p class="section-copy mt-4 max-w-2xl text-sm leading-relaxed text-white/50">
+        One setup replaces the usual onboarding scavenger hunt. RoleReady keeps training current as
+        product knowledge changes.
+      </p>
+
+      <div class="how-grid mt-14 flex w-full max-w-5xl flex-col gap-4 md:flex-row md:gap-6">
+        @for (step of howItWorksSteps; track step.step) {
+          <div class="relative flex-1">
+            @if (!$last) {
+              <div
+                class="absolute right-[-0.75rem] top-1/2 hidden h-px w-6 bg-gradient-to-r from-blue-500/40 to-transparent md:block"
+              ></div>
+            }
+            <article class="how-card liquid-glass">
+              <div class="how-card-body">
+                <span class="how-step">{{ step.step }}</span>
+                <h3 class="landing-heading mt-5 text-[1.6rem] leading-[0.95] text-white">
+                  {{ step.title }}
+                </h3>
+                <p class="mt-4 text-sm leading-7 text-white/44">{{ step.description }}</p>
+              </div>
+            </article>
+          </div>
+        }
+      </div>
+
+      <a routerLink="/login" class="landing-button landing-button-primary mt-8">
+        Get started free
+        <ng-icon name="lucideArrowUpRight" />
+      </a>
+    </div>
+  </section>
+
+  <section
+    #featuresSection
+    id="features"
+    class="px-6 py-24 md:px-16 lg:px-24"
+    [attr.data-visible]="spotlightsVisible()"
+  >
+    <div class="section-intro text-center">
+      <span class="section-badge">Core capabilities</span>
+      <h2 class="section-title landing-heading mt-4 text-4xl leading-[0.9] text-white md:text-5xl">
+        Rebuild onboarding around live company knowledge.
+      </h2>
+      <p class="section-copy mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/50">
+        The goal is not more content. The goal is faster context, stronger retention, and less
+        manual enablement work every time your team hires.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-14 flex max-w-6xl flex-col gap-18">
+      @for (spotlight of featureSpotlights; track spotlight.title) {
+        <article
+          class="spotlight flex flex-col items-center gap-10 lg:flex-row"
+          [attr.data-reversed]="spotlight.reverse"
+        >
+          <div class="spotlight-copy flex-1 text-center lg:text-left">
+            <div
+              class="liquid-glass-strong mb-4 mx-auto flex h-10 w-10 items-center justify-center rounded-full lg:mx-0"
+            >
+              <ng-icon [name]="spotlight.icon" class="text-base text-blue-400" />
+            </div>
+            <h3 class="landing-heading text-[2.15rem] leading-[0.95] text-white">
+              {{ spotlight.title }}
+            </h3>
+            <p class="mt-4 text-base leading-8 text-white/50">
+              {{ spotlight.description }}
+            </p>
+
+            @if (spotlight.ctaHref === '/login') {
+              <a routerLink="/login" class="landing-button landing-button-secondary mt-6">
+                {{ spotlight.ctaLabel }}
+                <ng-icon name="lucideArrowUpRight" />
+              </a>
+            } @else {
+              <a [href]="spotlight.ctaHref" class="landing-button landing-button-secondary mt-6">
+                {{ spotlight.ctaLabel }}
+                <ng-icon name="lucideArrowUpRight" />
+              </a>
+            }
+          </div>
+
+          <div class="spotlight-visual flex-1 w-full">
+            @switch (spotlight.visual) {
+              @case ('gamification') {
+                <div
+                  class="spotlight-demo spotlight-demo-gamification liquid-glass rounded-xl p-5"
+                  [attr.data-visible]="spotlightsVisible()"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-white">Level 7</span>
+                    <span class="text-xs text-blue-400">2,450 XP</span>
+                  </div>
+                  <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      class="demo-fill demo-fill-gamification h-full rounded-full bg-gradient-to-r from-blue-600 to-blue-400"
+                      style="--fill-scale: 0.72"
+                    ></div>
+                  </div>
+                  <div class="flex justify-center gap-1.5 pt-4">
+                    @for (day of weekdayStreak; track day.label) {
+                      <div
+                        class="streak-day text-center"
+                        [style.--streak-delay]="1.05 + $index * 0.22 + 's'"
+                      >
+                        <div class="streak-chip" [attr.data-completed]="day.completed">
+                          @if (day.completed) {
+                            <span class="streak-chip-mark">✓</span>
+                          }
+                        </div>
+                        <span class="mt-1 block text-[9px] text-white/30">{{ day.label }}</span>
+                      </div>
+                    }
+                  </div>
+                  <div class="space-y-1.5 pt-3">
+                    @for (entry of leaderboardEntries; track entry.rank) {
+                      <div
+                        class="leaderboard-row"
+                        [attr.data-highlighted]="entry.highlighted"
+                        [style.--row-delay]="2.15 + $index * 0.18 + 's'"
+                      >
+                        <div class="flex items-center gap-2">
+                          <span class="w-4 text-[10px] text-white/40">#{{ entry.rank }}</span>
+                          <div
+                            class="h-4 w-4 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500"
+                          ></div>
+                          <span class="text-xs text-white/70">{{ entry.name }}</span>
+                        </div>
+                        <span class="text-[10px] text-blue-400">{{ entry.xp }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              @case ('ingestion') {
+                <div
+                  class="spotlight-demo spotlight-demo-ingestion liquid-glass rounded-xl p-5"
+                  [attr.data-visible]="spotlightsVisible()"
+                >
+                  <div class="space-y-2.5">
+                    @for (source of ingestionSources; track source.source) {
+                      <div class="ingestion-row" [style.--row-delay]="0.25 + $index * 0.24 + 's'">
+                        <div class="flex items-center gap-2.5">
+                          <div class="ingestion-source-badge">
+                            {{ source.source.slice(0, 2).toUpperCase() }}
+                          </div>
+                          <div>
+                            <div class="text-xs font-medium text-white/80">{{ source.source }}</div>
+                            <div class="text-[10px] text-white/30">{{ source.assetCount }}</div>
+                          </div>
+                        </div>
+                        <span class="ingestion-status" [attr.data-tone]="source.tone">
+                          {{ source.statusLabel }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                  <div class="pt-3">
+                    <div class="mb-1 flex justify-between text-[10px] text-white/40">
+                      <span>AI analysis in progress</span>
+                      <span>68%</span>
+                    </div>
+                    <div class="h-1.5 overflow-hidden rounded-full bg-white/5">
+                      <div
+                        class="demo-fill demo-fill-ingestion h-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-500"
+                        style="--fill-scale: 0.68"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @case ('dashboard') {
+                <div
+                  class="spotlight-demo spotlight-demo-dashboard liquid-glass rounded-xl p-5"
+                  [attr.data-visible]="spotlightsVisible()"
+                >
+                  <div class="grid grid-cols-3 gap-2">
+                    @for (stat of dashboardStats; track stat.label) {
+                      <div
+                        class="dashboard-stat-card rounded-lg border border-white/5 bg-white/[0.02] py-2.5 text-center"
+                        [style.--card-delay]="0.2 + $index * 0.14 + 's'"
+                      >
+                        <div class="landing-heading text-xl text-blue-400">{{ stat.value }}</div>
+                        <div class="text-[9px] text-white/30">{{ stat.label }}</div>
+                      </div>
+                    }
+                  </div>
+                  <div class="mt-3 space-y-2">
+                    @for (team of teamProgress; track team.team) {
+                      <div
+                        class="dashboard-team-row flex items-center gap-2.5"
+                        [style.--row-delay]="0.8 + $index * 0.18 + 's'"
+                      >
+                        <div class="w-20 truncate text-xs text-white/50">{{ team.team }}</div>
+                        <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                          <div
+                            class="demo-fill demo-fill-dashboard h-full rounded-full bg-gradient-to-r from-blue-600 to-blue-400"
+                            [style.--fill-scale]="team.progress / 100"
+                            [style.--fill-delay]="1 + $index * 0.18 + 's'"
+                          ></div>
+                        </div>
+                        <span class="w-7 text-right text-[10px] text-white/30"
+                          >{{ team.progress }}%</span
+                        >
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="px-6 py-24 md:px-16 lg:px-24">
+    <div class="section-intro text-center">
+      <span class="section-badge">Platform</span>
+      <h2 class="section-title landing-heading mt-4 text-4xl leading-[0.9] text-white md:text-5xl">
+        Everything needed, in one system.
+      </h2>
+      <p class="section-copy mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/50">
+        RoleReady gives teams one place to turn internal complexity into a repeatable onboarding
+        operating system.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      @for (feature of platformFeatures; track feature.title) {
+        <article
+          class="platform-card liquid-glass rounded-xl p-5 transition-colors hover:bg-blue-500/[0.03]"
+        >
+          <div
+            class="liquid-glass-strong mb-4 flex h-10 w-10 items-center justify-center rounded-full"
+          >
+            <ng-icon [name]="feature.icon" class="text-base text-blue-400" />
+          </div>
+          <h3 class="landing-heading text-xl text-white">{{ feature.title }}</h3>
+          <p class="mt-3 text-sm leading-7 text-white/50">{{ feature.description }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden px-6 py-24 md:px-16 lg:px-24">
+    <div class="section-ambient section-ambient-stats absolute inset-0 z-0" aria-hidden="true">
+      <div class="glow-blue-bottom absolute inset-0"></div>
+      <div class="outcomes-orb outcomes-orb-1 orb orb-1"></div>
+      <div class="outcomes-orb outcomes-orb-2 orb orb-2"></div>
+    </div>
+    <div #outcomesPanel class="relative z-10 mx-auto max-w-6xl text-center">
+      <span class="section-badge">Outcomes</span>
+      <div
+        class="stats-panel liquid-glass mt-6 rounded-2xl p-10 md:p-12"
+        [attr.data-visible]="outcomesVisible()"
+      >
+        <div class="grid grid-cols-2 gap-6 text-center lg:grid-cols-4">
+          @for (stat of outcomeStats; track stat.label) {
+            <div class="outcome-stat" [style.--outcome-delay]="$index * 0.12 + 's'">
+              <div class="landing-heading text-4xl text-blue-400 md:text-5xl">
+                {{ animatedOutcomeValues()[$index] }}
+              </div>
+              <div class="mt-2 text-xs text-white/50">{{ stat.label }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-24 md:px-16 lg:px-24">
+    <div class="section-intro text-center">
+      <span class="section-badge">Customer stories</span>
+      <h2 class="section-title landing-heading mt-4 text-4xl leading-[0.9] text-white md:text-5xl">
+        Proof, not promises.
+      </h2>
+    </div>
+
+    <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-3">
+      @for (testimonial of testimonials; track testimonial.name) {
+        <article
+          class="testimonial-card liquid-glass flex flex-col rounded-xl p-6 transition-colors hover:bg-blue-500/[0.02]"
+        >
+          <p class="flex-1 text-sm leading-8 text-white/70">"{{ testimonial.quote }}"</p>
+          <div class="mt-5 flex items-center gap-3">
+            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500"></div>
+            <div>
+              <div class="text-sm font-medium text-white">{{ testimonial.name }}</div>
+              <div class="text-xs text-white/40">{{ testimonial.role }}</div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section id="pricing" class="px-6 py-24 md:px-16 lg:px-24">
+    <div class="section-intro text-center">
+      <span class="section-badge">Pricing</span>
+      <h2 class="section-title landing-heading mt-4 text-4xl leading-[0.9] text-white md:text-5xl">
+        Simple pricing that scales.
+      </h2>
+      <p class="section-copy mt-4 text-sm text-white/40">
+        Start small, prove value, then expand as onboarding becomes part of your operating system.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 items-stretch gap-4 md:grid-cols-3">
+      @for (plan of pricingPlans; track plan.name) {
+        <article class="pricing-card rounded-xl p-6" [attr.data-featured]="plan.featured">
+          @if (plan.featured) {
+            <span
+              class="mb-2 block text-[10px] font-semibold tracking-[0.18em] text-blue-400 uppercase"
+            >
+              Most popular
+            </span>
+          }
+
+          <h3 class="landing-heading text-2xl text-white">{{ plan.name }}</h3>
+
+          <div class="mt-3 flex items-baseline gap-1">
+            <span class="landing-heading text-3xl text-white md:text-4xl">{{ plan.price }}</span>
+            @if (plan.period) {
+              <span class="text-xs text-white/30">{{ plan.period }}</span>
+            }
+          </div>
+
+          <p class="mt-2 text-xs text-white/40">{{ plan.description }}</p>
+
+          <ul class="mt-5 flex-1 space-y-2.5">
+            @for (feature of plan.features; track feature) {
+              <li class="flex items-start gap-2">
+                <ng-icon name="lucideCheck" class="mt-0.5 text-sm text-blue-400" />
+                <span class="text-xs leading-6 text-white/60">{{ feature }}</span>
+              </li>
+            }
+          </ul>
+
+          <a
+            routerLink="/login"
+            class="landing-button mt-6 w-full justify-center"
+            [class.landing-button-primary]="plan.featured"
+            [class.landing-button-secondary]="!plan.featured"
+          >
+            {{ plan.ctaLabel }}
+            <ng-icon name="lucideArrowUpRight" />
+          </a>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden px-6 py-24 md:px-16 lg:px-24">
+    <div class="section-ambient section-ambient-cta absolute inset-0 z-0" aria-hidden="true">
+      <div class="bg-dots absolute inset-0 opacity-40"></div>
+      <div class="glow-blue-bottom absolute inset-0"></div>
+      <div class="orb orb-3"></div>
+      <div class="outcomes-orb outcomes-orb-2 orb orb-2"></div>
+    </div>
+    <div class="relative z-10 py-8 text-center">
+      <h2 class="landing-heading text-5xl leading-[0.9] text-white md:text-6xl">
+        Give onboarding a system, not a slideshow.
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-sm leading-8 text-white/50">
+        Start a free trial and see how quickly AI-generated training can turn company knowledge into
+        a structured ramp for every new hire.
+      </p>
+
+      <div class="cta-actions mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a routerLink="/login" class="landing-button landing-button-primary">Get started free</a>
+        <a href="#pricing" class="landing-button landing-button-secondary">View pricing</a>
+      </div>
+    </div>
+
+    <footer
+      class="relative z-10 mt-20 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 md:flex-row"
+    >
+      <div class="flex items-center gap-2.5">
+        <app-service-icon class="h-7 w-7" />
+        <span class="text-xs text-white/30">© {{ currentYear }} RoleReady Inc.</span>
+      </div>
+
+      <div class="footer-links flex gap-6">
+        @for (link of footerLinks; track link.href) {
+          <a [href]="link.href" class="text-xs text-white/30 transition-colors hover:text-white/50">
+            {{ link.label }}
+          </a>
+        }
+      </div>
+    </footer>
+  </section>
+</main>

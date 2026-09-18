@@ -1,0 +1,347 @@
+<div class="min-h-screen text-foreground">
+  <main class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    @if (dashboardError(); as errorMessage) {
+      <div hlmAlert variant="destructive" class="mt-6">
+        <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+        <p hlmAlertDescription>{{ errorMessage }}</p>
+      </div>
+    }
+
+    @if (orgFacade.isAdmin()) {
+      <section hlmCard class="dashboard-hero border-0 shadow-none">
+        <div hlmCardContent class="relative p-6 sm:p-10">
+          <div class="relative space-y-8">
+            <div class="max-w-3xl space-y-4">
+              <div class="space-y-3">
+                <h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+                  Welcome, {{ welcomeIdentity() }}
+                </h1>
+                <p class="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                  Monitor live training rollout, assignment coverage, and learner completion.
+                </p>
+              </div>
+            </div>
+
+            @if (isLoading()) {
+              <div
+                class="grid gap-4 sm:grid-cols-2"
+                role="status"
+                aria-label="Loading summary cards"
+              >
+                @for (_ of summarySkeletons; track $index) {
+                  <section hlmCard class="dashboard-stat-card border-0 p-5 shadow-lg">
+                    <div class="space-y-3">
+                      <hlm-skeleton class="h-3 w-20" />
+                      <hlm-skeleton class="h-10 w-24 rounded-xl" />
+                      <hlm-skeleton class="h-3 w-36" />
+                    </div>
+                  </section>
+                }
+              </div>
+            } @else {
+              <div class="grid gap-4 sm:grid-cols-2">
+                @for (summary of summaryCards(); track summary.id) {
+                  <article
+                    hlmCard
+                    class="dashboard-stat-card border-0 shadow-lg"
+                    [attr.data-tone]="summary.accent"
+                  >
+                    <div hlmCardContent class="p-3">
+                      <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                          <p class="dashboard-tone-label">{{ summary.title }}</p>
+                        </div>
+                        <div class="shrink-0 text-right">
+                          <div class="text-3xl font-semibold tracking-tight">
+                            {{ summary.metric }}
+                          </div>
+                          <p class="text-[0.62rem] font-medium leading-none text-muted-foreground">
+                            {{ summary.metricLabel }}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="mt-2.5">
+                        <div class="flex items-center justify-between gap-3 text-[0.68rem]">
+                          <span class="font-medium text-muted-foreground">
+                            {{ summary.progressLabel }}
+                          </span>
+                          <span class="font-semibold">{{ summary.progress }}%</span>
+                        </div>
+                        <div class="dashboard-kpi-progress mt-1.5">
+                          <div [style.width.%]="summary.progress"></div>
+                        </div>
+                      </div>
+
+                      @if (summary.segments; as segments) {
+                        <div class="mt-2">
+                          <div class="dashboard-segment-bar" aria-hidden="true">
+                            @for (segment of segments; track segment.id) {
+                              <span
+                                [attr.data-segment]="segment.id"
+                                [style.width.%]="segment.percent"
+                              ></span>
+                            }
+                          </div>
+                        </div>
+                      }
+
+                      @if (summary.attentionLearners; as attentionLearners) {
+                        @if (attentionLearners.length > 0) {
+                          <ul class="mt-2 space-y-1">
+                            @for (learner of attentionLearners; track learner.id) {
+                              <li
+                                class="flex items-center gap-2 rounded-lg bg-muted/40 px-2 py-1.5"
+                              >
+                                @if (learner.avatarUrl) {
+                                  <img
+                                    class="size-5 rounded-full object-cover"
+                                    [src]="learner.avatarUrl"
+                                    alt=""
+                                  />
+                                }
+                                <p class="min-w-0 flex-1 truncate text-xs font-semibold">
+                                  {{ learner.displayName }}
+                                </p>
+                                <span class="shrink-0 text-[0.62rem] font-medium text-destructive">
+                                  {{ learner.issueLabel }}
+                                </span>
+                              </li>
+                            }
+                          </ul>
+                        }
+                      }
+
+                      @if (summary.supportingStats.length > 0) {
+                        <dl
+                          class="mt-2 grid grid-cols-4 divide-x divide-border overflow-hidden rounded-lg bg-muted/40"
+                        >
+                          @for (stat of summary.supportingStats; track stat.label) {
+                            <div class="min-w-0 px-2 py-1.5 text-center">
+                              <dt
+                                class="flex min-w-0 items-center justify-center gap-1 text-[0.6rem] font-medium leading-none text-muted-foreground"
+                              >
+                                @if (stat.segmentId; as segmentId) {
+                                  <span
+                                    class="inline-block h-[0.45rem] w-[0.45rem] shrink-0 rounded-full"
+                                    [attr.data-segment]="segmentId"
+                                    aria-hidden="true"
+                                  ></span>
+                                }
+                                <span class="truncate">{{ stat.label }}</span>
+                              </dt>
+                              <dd class="mt-1 text-sm font-semibold leading-none tracking-tight">
+                                {{ stat.value }}
+                              </dd>
+                            </div>
+                          }
+                        </dl>
+                      }
+
+                      @if (summary.secondaryMetric; as secondary) {
+                        <section
+                          class="mt-2 rounded-lg bg-muted/40 p-2"
+                          [attr.data-tone]="secondary.accent"
+                        >
+                          <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0">
+                              <p class="dashboard-tone-label">{{ secondary.title }}</p>
+                            </div>
+                            <div class="shrink-0 text-right">
+                              <div class="text-2xl font-semibold tracking-tight">
+                                {{ secondary.metric }}
+                              </div>
+                              <p
+                                class="text-[0.62rem] font-medium leading-none text-muted-foreground"
+                              >
+                                {{ secondary.metricLabel }}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div class="mt-2">
+                            <div class="flex items-center justify-between gap-3 text-[0.68rem]">
+                              <span class="font-medium text-muted-foreground">
+                                {{ secondary.progressLabel }}
+                              </span>
+                              <span class="font-semibold">{{ secondary.progress }}%</span>
+                            </div>
+                            <div class="dashboard-kpi-progress mt-1.5">
+                              <div [style.width.%]="secondary.progress"></div>
+                            </div>
+                          </div>
+
+                          <dl
+                            class="mt-2 grid grid-cols-4 divide-x divide-border overflow-hidden rounded-lg bg-background/60"
+                          >
+                            @for (stat of secondary.supportingStats; track stat.label) {
+                              <div class="min-w-0 px-2 py-1.5 text-center">
+                                <dt
+                                  class="truncate text-[0.6rem] font-medium leading-none text-muted-foreground"
+                                >
+                                  {{ stat.label }}
+                                </dt>
+                                <dd class="mt-1 text-sm font-semibold leading-none tracking-tight">
+                                  {{ stat.value }}
+                                </dd>
+                              </div>
+                            }
+                          </dl>
+                        </section>
+                      }
+                    </div>
+                  </article>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 space-y-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div class="space-y-1">
+            <h2 class="text-2xl font-semibold tracking-tight">Trainings</h2>
+            <p class="text-sm text-muted-foreground">
+              Live training data with real module and assignment progress.
+            </p>
+          </div>
+        </div>
+
+        <app-training-card-grid
+          [trainings]="managerTrainings()"
+          [isLoading]="isLoading()"
+          [emptyState]="managerEmptyState"
+          [columns]="3"
+          [linkFn]="trainingLinkFn"
+        />
+      </section>
+    } @else {
+      <section hlmCard class="dashboard-hero mt-6 border-0 shadow-none">
+        <div hlmCardContent class="relative p-6 sm:p-10">
+          <div class="dashboard-hero-overlay" aria-hidden="true"></div>
+          <div class="relative grid gap-8 xl:grid-cols-[1.6fr_0.9fr] xl:items-center">
+            <div class="max-w-3xl space-y-4">
+              <p class="dashboard-kicker">Onboarding Dashboard</p>
+              <div class="space-y-3">
+                <h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+                  Welcome, {{ welcomeIdentity() }}
+                </h1>
+                <p class="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                  Continue the trainings assigned to you and pick up from your last completed
+                  module.
+                </p>
+              </div>
+            </div>
+
+            <section
+              hlmCard
+              class="dashboard-stat-card border-0 shadow-xl xl:ml-auto xl:max-w-md"
+              data-tone="ocean"
+            >
+              <div hlmCardContent class="p-6">
+                <div class="flex items-start justify-between gap-6">
+                  <div class="space-y-2">
+                    <p class="dashboard-tone-label">Overall progress</p>
+                    <div class="text-3xl font-semibold tracking-tight">
+                      {{ overallProgress() }}%
+                    </div>
+                    <p class="text-sm text-muted-foreground">
+                      Resume the next assigned training from your current learning path.
+                    </p>
+                  </div>
+                  <div #overallDonut class="h-20 w-20 shrink-0" aria-hidden="true"></div>
+                </div>
+
+                <button
+                  hlmBtn
+                  type="button"
+                  variant="secondary"
+                  class="mt-6 w-full justify-between rounded-full px-5 shadow-sm"
+                  (click)="resumeTraining()"
+                >
+                  Resume where you left off
+                  <ng-icon name="lucidePlay" />
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 space-y-6">
+        <div class="space-y-1">
+          <h2 class="text-2xl font-semibold tracking-tight">Trainings</h2>
+          <p class="text-sm text-muted-foreground">Your assigned trainings and progress.</p>
+        </div>
+
+        <app-training-card-grid
+          [trainings]="inProgressInternTrainings()"
+          [isLoading]="isLoading()"
+          [emptyState]="inProgressEmptyState"
+          [columns]="4"
+          [linkFn]="trainingLinkFn"
+        />
+      </section>
+    }
+  </main>
+</div>
+
+<hlm-dialog
+  [state]="previewTraining() ? 'open' : 'closed'"
+  (stateChanged)="handlePreviewStateChange($event)"
+>
+  <ng-template hlmDialogPortal>
+    <div hlmDialogContent class="overflow-hidden p-0 sm:max-w-3xl">
+      @if (previewTraining(); as training) {
+        <div class="border-b border-border px-6 py-4">
+          <div class="flex items-start justify-between gap-4">
+            <div class="space-y-1">
+              <h3 hlmDialogTitle class="text-xl font-semibold">{{ training.title }}</h3>
+              <p hlmDialogDescription class="text-sm text-muted-foreground">
+                {{ training.badgeLabel }} · {{ training.detailLabel }}
+              </p>
+            </div>
+            <button
+              hlmBtn
+              hlmDialogClose
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Close preview"
+            >
+              <ng-icon name="lucideX" />
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-6 p-6">
+          <app-training-cover-image
+            [imageUrl]="training.imageUrl"
+            [imageAlt]="training.imageAlt"
+            [imageStatus]="training.coverImageStatus"
+            imageClass="aspect-video w-full rounded-xl object-cover"
+            placeholderClass="aspect-video w-full rounded-xl"
+          />
+
+          @if (training.description) {
+            <p class="text-sm leading-7 text-muted-foreground">{{ training.description }}</p>
+          }
+
+          <!-- TODO(api): Replace this placeholder with signed video URLs, checkpoints, and completion state once training/video endpoints exist. -->
+          <div
+            class="flex h-72 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/40 text-muted-foreground"
+          >
+            <div class="space-y-3 text-center">
+              <ng-icon name="lucideVideo" class="text-3xl" />
+              <div>
+                <p class="font-medium text-foreground">Video player placeholder</p>
+                <p class="text-sm">Backend-backed playback is not wired yet for this dashboard.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </ng-template>
+</hlm-dialog>
